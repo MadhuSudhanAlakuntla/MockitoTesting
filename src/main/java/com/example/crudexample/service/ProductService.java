@@ -19,7 +19,11 @@ public class ProductService {
     }
 
     public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+        if(productRepository.existsById(id)){
+            return productRepository.findById(id);
+        }
+
+        return Optional.empty();
     }
 
     public Product save(Product product) {

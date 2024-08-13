@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -31,6 +31,8 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(List.of(product,product));
 
         List<Product> products = productService.findAll();
+
+
         assertNotNull(products);
         assertEquals(2,products.size(),"expected only two");
     }
@@ -40,6 +42,7 @@ class ProductServiceTest {
         //Arrange
         Product product = new Product();
         product.setName("product 1");
+        when(productRepository.existsById(anyLong())).thenReturn(true);
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
         //Act
@@ -49,5 +52,7 @@ class ProductServiceTest {
         //Assert
         assertNotNull(product);
         assertEquals("product 1",result.get().getName());
+        verify(productRepository,times(1)).findById(anyLong());
+
     }
 }

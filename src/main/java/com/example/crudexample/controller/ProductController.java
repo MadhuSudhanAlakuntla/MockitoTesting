@@ -34,7 +34,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if (!productService.findById(id).isPresent()) {
+        if (productService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         product.setId(id);
@@ -43,7 +43,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (!productService.findById(id).isPresent()) {
+        if (productService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         productService.deleteById(id);
